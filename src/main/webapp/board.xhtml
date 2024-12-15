@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:metadata>
+    <!-- Redirect unauthenticated users to the login page -->
+    <f:viewAction action="#{authBean.loggedInUser == null ? 'login?faces-redirect=true' : null}" />
+</f:metadata>
+
+<h:body>
+    <h:panelGrid columns="3">
+        <h:outputLabel value="To Do" />
+        <h:outputLabel value="In Progress" />
+        <h:outputLabel value="Done" />
+
+        <!-- Display tasks for 'To Do' -->
+        <ui:repeat value="#{kanbanBean.todoTasks}" var="task">
+            <h:outputText value="#{task.title}" />
+        </ui:repeat>
+
+        <!-- Display tasks for 'In Progress' -->
+        <ui:repeat value="#{kanbanBean.inProgressTasks}" var="task">
+            <h:outputText value="#{task.title}" />
+        </ui:repeat>
+
+        <!-- Display tasks for 'Done' -->
+        <ui:repeat value="#{kanbanBean.doneTasks}" var="task">
+            <h:outputText value="#{task.title}" />
+        </ui:repeat>
+    </h:panelGrid>
+
+    <!-- Add logout button -->
+    <h:form>
+        <h:commandButton value="Logout" action="#{authBean.logout}" />
+    </h:form>
+</h:body>
+
+</html>
