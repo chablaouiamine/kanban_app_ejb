@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Kanban Board</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2b6cb0;
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .project-name {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .navbar .user-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #3182ce;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .navbar .user-icon:hover {
+            transform: scale(1.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2d3748;
+            margin: 20px 0;
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        /* Style du kanban */
+        .kanban-board {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .kanban-column {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .kanban-column h3 {
+            font-size: 1.5em;
+            color: #2b6cb0;
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 10px;
+        }
+
+        .task {
+            background-color: #e6fffa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            cursor: grab;
+            border: 1px solid #b2f5ea;
+        }
+
+        /* Style du formulaire */
+        .add-task {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .add-task-input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e0;
+            width: 60%;
+            font-size: 1em;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-task-button {
+            padding: 10px 20px;
+            background-color: #3182ce;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <f:view>
+        <!-- Barre de navigation -->
+        <div class="navbar">
+            <div class="project-name">Kanban Board</div>
+            <div class="user-icon">H</div>
+        </div>
+
+        <h:form>
+            <h2>Kanban Board</h2>
+            <div class="kanban-board">
+                <!-- To Do Column -->
+                <div class="kanban-column">
+                    <h3>To Do</h3>
+                    <ui:repeat value="#{kanbanBoard.todo}" var="task">
+                        <div class="task" draggable="true">
+                            #{task}
+                        </div>
+                    </ui:repeat>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="kanban-column">
+                    <h3>In Progress</h3>
+                    <ui:repeat value="#{kanbanBoard.inProgress}" var="task">
+                        <div class="task" draggable="true">
+                            #{task}
+                        </div>
+                    </ui:repeat>
+                </div>
+
+                <!-- Done Column -->
+                <div class="kanban-column">
+                    <h3>Done</h3>
+                    <ui:repeat value="#{kanbanBoard.done}" var="task">
+                        <div class="task" draggable="true">
+                            #{task}
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+
+            <!-- Add New Task -->
+            <div class="add-task">
+                <h:inputText value="#{kanbanBoard.newTask}" placeholder="Enter new task..." styleClass="add-task-input" />
+                <h:commandButton value="Add Task" action="#{kanbanBoard.addToTodo}" styleClass="add-task-button" />
+            </div>
+        </h:form>
+    </f:view>
+</h:body>
+</html>

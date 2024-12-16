@@ -3,20 +3,147 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 <h:head>
    <title>Login</title>
+   <style>
+      /* Global Style */
+      body {
+         font-family: 'Arial', sans-serif;
+         background: linear-gradient(to bottom, #6a11cb, #2575fc);
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+         margin: 0;
+      }
+
+      /* Container for Login */
+      .login-container {
+         max-width: 420px;
+         width: 100%;
+         padding: 40px;
+         background-color: #ffffff;
+         border-radius: 12px;
+         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+         text-align: center;
+         transition: transform 0.3s ease;
+      }
+
+      .login-container:hover {
+         transform: scale(1.05);
+      }
+
+      .login-container h1 {
+         font-size: 2em;
+         color: #333;
+         margin-bottom: 25px;
+         font-weight: bold;
+      }
+
+      /* Label Style */
+      label {
+         display: block;
+         font-size: 1.1em;
+         color: #333;
+         margin-bottom: 8px;
+         text-align: left;
+         font-weight: bold;
+      }
+
+      /* Input Fields */
+      .input-field {
+         width: 100%;
+         padding: 15px;
+         margin-bottom: 20px;
+         border-radius: 8px;
+         border: 1px solid #ddd;
+         font-size: 1.1em;
+         background-color: #f7f7f7;
+         transition: border 0.3s ease-in-out;
+      }
+
+      .input-field:focus {
+         border-color: #2575fc;
+         outline: none;
+         background-color: #e9f1ff;
+      }
+
+      /* Login Button */
+      .login-button {
+         width: 100%;
+         padding: 15px;
+         background-color: #2575fc;
+         color: #ffffff;
+         font-size: 1.1em;
+         border: none;
+         border-radius: 8px;
+         cursor: pointer;
+         transition: background-color 0.3s ease;
+         font-weight: bold;
+      }
+
+      .login-button:hover {
+         background-color: #1d63d0;
+      }
+
+      /* Error Messages */
+      .error-messages {
+         color: #e53e3e;
+         margin-bottom: 20px;
+         font-size: 1em;
+      }
+
+      /* Footer Text */
+      .footer {
+         margin-top: 20px;
+         font-size: 0.9em;
+         color: #aaa;
+      }
+
+      .footer a {
+         color: #2575fc;
+         text-decoration: none;
+      }
+
+      /* Small adjustments for mobile view */
+      @media (max-width: 500px) {
+         .login-container {
+            padding: 30px;
+         }
+
+         .login-container h1 {
+            font-size: 1.7em;
+         }
+
+         .login-button {
+            font-size: 1em;
+         }
+      }
+   </style>
 </h:head>
+
 <h:body>
-   <h:form>
-      <h1>Login</h1>
+   <div class="login-container">
+      <h:form>
+         <h1>Login</h1>
 
-      <h:outputLabel value="Username:" for="username" />
-      <h:inputText id="username" value="#{authBean.username}" />
+         <!-- Error Messages -->
+         <h:messages globalOnly="true" styleClass="error-messages" />
 
-      <h:outputLabel value="Password:" for="password" />
-      <h:inputSecret id="password" value="#{authBean.password}" />
+         <!-- Username Input with Label -->
+         <label for="username">Username</label>
+         <h:inputText id="username" value="#{authBean.username}" placeholder="Enter Username" required="true" styleClass="input-field" />
 
-      <h:commandButton value="Login" action="#{authBean.login}" />
+         <!-- Password Input with Label -->
+         <label for="password">Password</label>
+         <h:inputSecret id="password" value="#{authBean.password}" placeholder="Enter Password" required="true" styleClass="input-field" />
 
-      <h:messages globalOnly="true" />
-   </h:form>
+         <!-- Login Button -->
+         <h:commandButton value="Login" action="#{authBean.login}" styleClass="login-button" />
+      </h:form>
+
+      <!-- Footer with link to signup or reset password -->
+      <div class="footer">
+         <p>Don't have an account? <h:link value="Sign Up" outcome="register.xhtml" /></p>
+      </div>
+   </div>
 </h:body>
 </html>

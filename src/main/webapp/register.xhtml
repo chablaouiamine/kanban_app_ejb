@@ -1,22 +1,155 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:form>
-   <h:outputLabel value="Email:" />
-   <h:inputText value="#{authBean.email}" />
+<h:head>
+   <title>Sign Up</title>
+   <style>
+      /* Global Style */
+      body {
+         font-family: 'Arial', sans-serif;
+         background: linear-gradient(to bottom, #ff9966, #ff5e62);
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+         margin: 0;
+      }
 
-   <h:outputLabel value="Username:" />
-   <h:inputText value="#{authBean.username}" />
+      /* Container for Signup */
+      .signup-container {
+         max-width: 420px;
+         width: 100%;
+         padding: 40px;
+         background-color: #ffffff;
+         border-radius: 12px;
+         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+         text-align: center;
+         transition: transform 0.3s ease;
+      }
 
-   <h:outputLabel value="Password:" />
-   <h:inputSecret value="#{authBean.password}" />
+      .signup-container:hover {
+         transform: scale(1.05);
+      }
 
-   <h:commandButton value="Register" action="#{authBean.register}" />
-</h:form>
+      .signup-container h1 {
+         font-size: 2em;
+         color: #333;
+         margin-bottom: 25px;
+         font-weight: bold;
+      }
 
+      /* Label Style */
+      label {
+         display: block;
+         font-size: 1.1em;
+         color: #333;
+         margin-bottom: 8px;
+         text-align: left;
+         font-weight: bold;
+      }
 
+      /* Input Fields */
+      .input-field {
+         width: 100%;
+         padding: 15px;
+         margin-bottom: 20px;
+         border-radius: 8px;
+         border: 1px solid #ddd;
+         font-size: 1.1em;
+         background-color: #f7f7f7;
+         transition: border 0.3s ease-in-out;
+      }
+
+      .input-field:focus {
+         border-color: #ff5e62;
+         outline: none;
+         background-color: #ffe6e6;
+      }
+
+      /* Signup Button */
+      .signup-button {
+         width: 100%;
+         padding: 15px;
+         background-color: #ff5e62;
+         color: #ffffff;
+         font-size: 1.1em;
+         border: none;
+         border-radius: 8px;
+         cursor: pointer;
+         transition: background-color 0.3s ease;
+         font-weight: bold;
+      }
+
+      .signup-button:hover {
+         background-color: #e14d54;
+      }
+
+      /* Error Messages */
+      .error-messages {
+         color: #e53e3e;
+         margin-bottom: 20px;
+         font-size: 1em;
+      }
+
+      /* Footer Text */
+      .footer {
+         margin-top: 20px;
+         font-size: 0.9em;
+         color: #aaa;
+      }
+
+      .footer a {
+         color: #ff5e62;
+         text-decoration: none;
+      }
+
+      /* Small adjustments for mobile view */
+      @media (max-width: 500px) {
+         .signup-container {
+            padding: 30px;
+         }
+
+         .signup-container h1 {
+            font-size: 1.7em;
+         }
+
+         .signup-button {
+            font-size: 1em;
+         }
+      }
+   </style>
+</h:head>
+
+<h:body>
+   <div class="signup-container">
+      <h:form>
+         <h1>Sign Up</h1>
+
+         <!-- Error Messages -->
+         <h:messages globalOnly="true" styleClass="error-messages" />
+
+         <!-- Email Input with Label -->
+         <label for="email">Email</label>
+         <h:inputText id="email" value="#{authBean.email}" placeholder="Enter Email" required="true" styleClass="input-field" />
+
+         <!-- Username Input with Label -->
+         <label for="username">Username</label>
+         <h:inputText id="username" value="#{authBean.username}" placeholder="Enter Username" required="true" styleClass="input-field" />
+
+         <!-- Password Input with Label -->
+         <label for="password">Password</label>
+         <h:inputSecret id="password" value="#{authBean.password}" placeholder="Enter Password" required="true" styleClass="input-field" />
+
+         <!-- Register Button -->
+         <h:commandButton value="Register" action="#{authBean.register}" styleClass="signup-button" />
+      </h:form>
+
+      <!-- Footer with link to login -->
+      <div class="footer">
+         <p>Already have an account? <h:link value="Login" outcome="login.xhtml" /></p>
+      </div>
+   </div>
+</h:body>
 </html>

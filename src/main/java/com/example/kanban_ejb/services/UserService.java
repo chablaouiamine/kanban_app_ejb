@@ -1,84 +1,54 @@
 package com.example.kanban_ejb.services;
 
 import com.example.kanban_ejb.entities.User;
-import org.mindrot.jbcrypt.BCrypt;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.io.Serializable;
-import java.util.List;
 
 @Stateless
-public class UserService implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class UserService {
+
     @PersistenceContext
     private EntityManager em;
 
-    public User authenticate(String username, String password) {
-        try {
-            // Query to find user by username
-            List<User> users = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
-                    .setParameter("username", username)
-                    .getResultList();
-
-            // If no user is found, return null
-            if (users.isEmpty()) {
-                return null;
-            }
-
-            // Assuming there's only one user with the given username (should be unique)
-            User user = users.get(0);
-
-            // Verify the password using bcrypt
-            if (verifyPassword(password, user.getPassword())) {
-                return user;
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            // Handle exception (log it or rethrow)
-            return null;
-        }
-    }
-
-
-    // Hash the password using bcrypt
-    public String hashPassword(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt());
-    }
-
-    // Verify the password using bcrypt
-    public boolean verifyPassword(String inputPassword, String storedHashedPassword) {
-        return BCrypt.checkpw(inputPassword, storedHashedPassword);
-    }
-
-
+    /**
+     * Enregistre un nouvel utilisateur.
+     *
+     * @param user L'utilisateur à enregistrer.
+     * @return true si l'utilisateur a été enregistré avec succès, sinon false.
+     */
     public boolean register(User user) {
         try {
-            // Check if username already exists
+            // Vérifier si le nom d'utilisateur existe déjà
             Long count = em.createQuery("SELECT COUNT(u) FROM User u WHERE u.username = :username", Long.class)
                     .setParameter("username", user.getUsername())
                     .getSingleResult();
 
             if (count > 0) {
-                return false; // Username already exists
+                // Nom d'utilisateur déjà pris
+                return false;
             }
 
-            // Persist the new user
-            user.setPassword(hashPassword(user.getPassword())); // Hash password before saving
+            // Hacher le mot de passe avant de sauvegarder
+            user.setPassword(hashPassword(user.getPassword()));
+
+            // Enregistrer l'utilisateur
             em.persist(user);
             return true;
+
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
 
-//    private String hashPassword(String password) {
-//        // Example hashing logic (use libraries like bcrypt in production)
-//        return Integer.toHexString(password.hashCode());
-//    }
+    /**
+     * Hache un mot de passe à l'aide de BCrypt.
+     *
+     * @param plainPassword Le mot de passe en clair.
+     * @return Le mot de passe haché.
+     */
+    private String hashPassword(String plainPassword) {
+        return org.mindrot.jbcrypt.BCrypt.hashpw(plainPassword, org.mindrot.jbcrypt.BCrypt.gensalt());
+    }
 }
-
-
