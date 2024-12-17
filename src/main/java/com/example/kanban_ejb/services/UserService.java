@@ -4,12 +4,26 @@ import com.example.kanban_ejb.entities.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.security.Principal;
 
 @Stateless
 public class UserService {
 
     @PersistenceContext
     private EntityManager em;
+
+    public User getLoggedInUser() {
+        // Retrieve the logged-in user based on the security context.
+        Principal principal = javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
+        if (principal != null) {
+            String username = principal.getName();
+            System.out.println("///////////////////////////////////////////////////////////////////////" + username);
+            return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+        }
+        return null; // If no user is logged in.
+    }
 
     /**
      * Enregistre un nouvel utilisateur.
