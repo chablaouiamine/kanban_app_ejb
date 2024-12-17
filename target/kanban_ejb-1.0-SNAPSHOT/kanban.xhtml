@@ -2,24 +2,110 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://www.w3.org/1999/xhtml">
 <h:head>
     <title>Kanban Board</title>
     <style>
-        /* Keep existing CSS */
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .kanban-board {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .kanban-column {
+            flex: 1;
+            margin: 0 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .kanban-column h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .task {
+            background-color: #e9ecef;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .task-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .task-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .task-button:hover {
+            background-color: #0056b3;
+        }
+
+        .add-task {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .add-task-input {
+            padding: 10px;
+            width: 60%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .add-task-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-task-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </h:head>
 
 <h:body>
     <f:view>
-        <!-- Navbar -->
         <div class="navbar">
             <div class="project-name">Kanban Board</div>
             <div class="user-icon">H</div>
         </div>
 
-        <h:form>
-            <h2>Kanban Board</h2>
+        <h:form id="kanbanForm">
             <div class="kanban-board">
                 <!-- To Do Column -->
                 <div class="kanban-column">
@@ -27,9 +113,9 @@
                     <ui:repeat value="#{kanbanBoard.todo}" var="task">
                         <div class="task">
                             #{task.title}
-                            <h:commandButton value="Move to In Progress"
-                                             action="#{kanbanBoard.moveTaskToInProgress(task)}"
-                                             styleClass="add-task-button" />
+                            <div class="task-buttons">
+                                <h:commandButton value="Move to In Progress" action="#{kanbanBoard.moveTaskToInProgress(task)}" class="task-button" />
+                            </div>
                         </div>
                     </ui:repeat>
                 </div>
@@ -40,9 +126,10 @@
                     <ui:repeat value="#{kanbanBoard.inProgress}" var="task">
                         <div class="task">
                             #{task.title}
-                            <h:commandButton value="Move to Done"
-                                             action="#{kanbanBoard.moveTaskToDone(task)}"
-                                             styleClass="add-task-button" />
+                            <div class="task-buttons">
+                                <h:commandButton value="Move to Done" action="#{kanbanBoard.moveTaskToDone(task)}" class="task-button" />
+                                <h:commandButton value="Move to To Do" action="#{kanbanBoard.moveTaskToTodo(task)}" class="task-button" />
+                            </div>
                         </div>
                     </ui:repeat>
                 </div>
@@ -53,6 +140,9 @@
                     <ui:repeat value="#{kanbanBoard.done}" var="task">
                         <div class="task">
                             #{task.title}
+                            <div class="task-buttons">
+                                <h:commandButton value="Move to In Progress" action="#{kanbanBoard.moveTaskToInProgress(task)}" class="task-button" />
+                            </div>
                         </div>
                     </ui:repeat>
                 </div>
@@ -60,8 +150,8 @@
 
             <!-- Add New Task -->
             <div class="add-task">
-                <h:inputText value="#{kanbanBoard.newTaskTitle}" placeholder="Enter new task..." styleClass="add-task-input" />
-                <h:commandButton value="Add Task" action="#{kanbanBoard.addToTodo}" styleClass="add-task-button" />
+                <h:inputText value="#{kanbanBoard.newTaskTitle}" placeholder="Enter new task..." class="add-task-input" />
+                <h:commandButton value="Add Task" action="#{kanbanBoard.addToTodo}" class="add-task-button" />
             </div>
         </h:form>
     </f:view>

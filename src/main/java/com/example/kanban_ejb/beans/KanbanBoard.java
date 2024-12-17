@@ -80,7 +80,11 @@ public class KanbanBoard implements Serializable {
             }
         }
     }
-
+    public void moveTaskToTodo(Task task) {
+        task.setStatus("TODO");
+        taskService.updateTask(task);
+        refreshTasks();
+    }
     public void addToTodo() {
         if (newTaskTitle != null && !newTaskTitle.trim().isEmpty()) {
             Task task = new Task();
