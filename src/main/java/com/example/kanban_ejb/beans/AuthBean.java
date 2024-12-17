@@ -28,6 +28,38 @@ public class AuthBean {
     private EntityManager em;
 
     // Login method with database validation
+//    public String login() {
+//        try {
+//            // Query to find user by username
+//            TypedQuery<User> query = em.createQuery(
+//                    "SELECT u FROM User u WHERE u.username = :username", User.class);
+//            query.setParameter("username", username);
+//
+//            // Try to get the user
+//            User user = query.getSingleResult();
+//
+//            // Verify password
+//            if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+//                // Successful login
+//                FacesContext.getCurrentInstance().addMessage(null,
+//                        new FacesMessage(FacesMessage.SEVERITY_INFO,
+//                                "Login Successful", "Welcome " + username));
+//                return "kanban.xhtml?faces-redirect=true";
+//            } else {
+//                // Invalid credentials
+//                FacesContext.getCurrentInstance().addMessage(null,
+//                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+//                                "Login Failed", "Invalid username or password"));
+//                return null;
+//            }
+//        } catch (Exception e) {
+//            // User not found
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+//                            "Login Failed", "User not found"));
+//            return null;
+//        }
+//    }
     public String login() {
         try {
             // Query to find user by username
@@ -35,31 +67,32 @@ public class AuthBean {
                     "SELECT u FROM User u WHERE u.username = :username", User.class);
             query.setParameter("username", username);
 
-            // Try to get the user
             User user = query.getSingleResult();
 
             // Verify password
             if (user != null && BCrypt.checkpw(password, user.getPassword())) {
-                // Successful login
+                // Store user in session
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .getSessionMap().put("loggedInUser", user);
+
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO,
                                 "Login Successful", "Welcome " + username));
                 return "kanban.xhtml?faces-redirect=true";
             } else {
-                // Invalid credentials
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                 "Login Failed", "Invalid username or password"));
                 return null;
             }
         } catch (Exception e) {
-            // User not found
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "Login Failed", "User not found"));
             return null;
         }
     }
+
 
     // Register method integrating with UserService
     public String register() {

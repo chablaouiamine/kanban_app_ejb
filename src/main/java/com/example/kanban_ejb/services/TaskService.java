@@ -15,8 +15,15 @@ public class TaskService {
     @PersistenceContext
     private EntityManager em;
 
+//    public void createTask(Task task) {
+//        em.persist(task);
+//    }
     public void createTask(Task task) {
-        em.persist(task);
+        if (task.getAssignedUser() != null) {
+            em.persist(task);
+        } else {
+            System.out.println("Task cannot be saved: assignedUser is null!");
+        }
     }
 
     public void updateTask(Task task) {

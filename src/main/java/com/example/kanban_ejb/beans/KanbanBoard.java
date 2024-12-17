@@ -11,6 +11,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,8 @@ public class KanbanBoard implements Serializable {
     private UserService userService; // Inject UserService to get the logged-in user.
 
     private User loggedInUser; // Store the currently logged-in user.
+    @PersistenceContext
+    private EntityManager em;
 
     private String newTaskTitle;
     private List<Task> todo;
@@ -41,6 +45,20 @@ public class KanbanBoard implements Serializable {
 
         refreshTasks();
     }
+//    @PostConstruct
+//    public void init() {
+//        loggedInUser = userService.getLoggedInUser();
+//
+//        // TEMPORARY: Assign a default user for testing
+//        if (loggedInUser == null) {
+//            System.out.println("No user found. Assigning default test user...");
+//            loggedInUser = em.createQuery("SELECT u FROM User u WHERE u.username = 'amine123'", User.class)
+//                    .getSingleResult();
+//        }
+//
+//        refreshTasks();
+//    }
+
 
     public void refreshTasks() {
         List<Task> tasks = taskService.getAllTasks();

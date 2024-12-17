@@ -2,6 +2,7 @@ package com.example.kanban_ejb.services;
 
 import com.example.kanban_ejb.entities.User;
 import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.security.Principal;
@@ -12,18 +13,33 @@ public class UserService {
     @PersistenceContext
     private EntityManager em;
 
+//    public User getLoggedInUser() {
+//        Principal principal = javax.faces.context.FacesContext.getCurrentInstance()
+//                .getExternalContext().getUserPrincipal();
+//
+//        if (principal != null) {
+//            String username = principal.getName();
+//            System.out.println("Logged-in user: " + username);
+//
+//            try {
+//                return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+//                        .setParameter("username", username)
+//                        .getSingleResult();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                System.out.println("User not found in database.");
+//            }
+//        } else {
+//            System.out.println("Principal is null. No user is logged in.");
+//        }
+//
+//        return null;
+//    }
     public User getLoggedInUser() {
-        // Retrieve the logged-in user based on the security context.
-        Principal principal = javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
-        if (principal != null) {
-            String username = principal.getName();
-            System.out.println("///////////////////////////////////////////////////////////////////////" + username);
-            return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
-                    .setParameter("username", username)
-                    .getSingleResult();
-        }
-        return null; // If no user is logged in.
+        return (User) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("loggedInUser");
     }
+
 
     /**
      * Enregistre un nouvel utilisateur.
